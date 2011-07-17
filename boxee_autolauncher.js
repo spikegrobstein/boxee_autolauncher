@@ -30,7 +30,6 @@ function listen () {
 				server.bind(2562);
 			} catch (err) {
 				console.log("Boxee MUST be running!");
-				child = true;
 			}
 			
 			setTimeout(listen, 2500); // wait 2.5 seconds and try again (in case boxee exits)
@@ -56,12 +55,6 @@ function is_boxee_running (callback_on_true, callback_on_false) {
 		console.log("no child process... must not be running.")
 		// if there's no child, yet, then it's not running
 		callback_on_false();
-		return;
-	}
-	
-	// this happens when we try to listen on the UDP port, but boxee is already running and listening.
-	if (child === true) {
-		callback_on_true();
 		return;
 	}
 	
