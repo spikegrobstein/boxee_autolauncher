@@ -20,7 +20,7 @@ function listen () {
 	try {
 		server.bind(2562);
 	} catch (err) {
-		util.log("Boxee appears to be running! waiting 2.5 seconds.");
+		util.log("Boxee appears to be running! (" + err.message + ") waiting 2.5 seconds.");
 		setTimeout(listen, 2500); // wait 2.5 seconds and try again (in case boxee exits)
 	}
 
@@ -42,6 +42,7 @@ server.on("message", function (msg, rinfo) {
 		});
 		
 		server.close();
+		server = dgram.createSocket("udp4");
 		listen();
 		
 	} else {
