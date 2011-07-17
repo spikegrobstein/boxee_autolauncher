@@ -18,6 +18,7 @@ server.on("message", function (msg, rinfo) {
 	if ( msg.toString('utf8').match(/cmd="discover"/) ) {
 		console.log("We got a discover packet!!! Launching Boxee at " + path_to_boxee);
 		
+		// launch boxee!
 		child = exec('open "' + path_to_boxee + '"',
 		  function (error, stdout, stderr) {
 		    if (error !== null) {
