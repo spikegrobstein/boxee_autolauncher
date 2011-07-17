@@ -82,6 +82,7 @@ server.on("message", function (msg, rinfo) {
 		});
 		
 		server.close();
+		listen();
 		
 	} else {
 		console.log("NOT a discover packet...");
