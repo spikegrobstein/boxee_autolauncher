@@ -17,24 +17,12 @@ var util = require('util'),
 function listen () {
 	console.log('ready to listen... check if boxee is running...');
 	
-	is_boxee_running(
-		function() {
-			console.log("Boxee is running... let's wait 2.5 seconds and try again...");
-
-			setTimeout(listen, 2500); // wait 2.5 seconds and try to listen again
-		},
-		function() {
-			console.log("Boxee is not running... let's start listening.");
-			
-			try {
-				server.bind(2562);
-			} catch (err) {
-				console.log("Boxee MUST be running!");
-				setTimeout(listen, 2500); // wait 2.5 seconds and try again (in case boxee exits)
-			}
-			
-		}
-	);
+	try {
+		server.bind(2562);
+	} catch (err) {
+		console.log("Boxee appears to be running! waiting 2.5 seconds.");
+		setTimeout(listen, 2500); // wait 2.5 seconds and try again (in case boxee exits)
+	}
 
 }
 
