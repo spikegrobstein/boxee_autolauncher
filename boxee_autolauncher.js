@@ -30,9 +30,9 @@ function listen () {
 				server.bind(2562);
 			} catch (err) {
 				console.log("Boxee MUST be running!");
+				setTimeout(listen, 2500); // wait 2.5 seconds and try again (in case boxee exits)
 			}
 			
-			setTimeout(listen, 2500); // wait 2.5 seconds and try again (in case boxee exits)
 		}
 	);
 
