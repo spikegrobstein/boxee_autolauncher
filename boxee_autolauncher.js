@@ -26,34 +26,40 @@ function listen () {
 
 }
 
-server.on("message", function (msg, rinfo) {
-  //util.log("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port);
+function initialize(server) {
+	server.on("message", function (msg, rinfo) {
+	  //util.log("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port);
 
-	// if it receives a discover packet, then let's try to launch boxee
-	if ( msg.toString('utf8').match(/cmd="discover"/) ) {
-		util.log("We got a discover packet!!! Launching Boxee at " + path_to_boxee);
-		
-		// launch boxee!
-		child = exec('open "' + path_to_boxee + '"',
-		  function (error, stdout, stderr) {
-		    if (error !== null) {
-		      util.log('exec error: ' + error);
-		    }
-		});
-		
-		server.close();
-		server = dgram.createSocket("udp4");
-		listen();
-		
-	} else {
-		util.log("NOT a discover packet...");
-	}
-	
-});
+		// if it receives a discover packet, then let's try to launch boxee
+		if ( msg.toString('utf8').match(/cmd="discover"/) ) {
+			util.log("We got a discover packet!!! Launching Boxee at " + path_to_boxee);
 
-server.on("listening", function () {
-  var address = server.address();
-  util.log("server listening " + address.address + ":" + address.port);
-});
+			// launch boxee!
+			child = exec('open "' + path_to_boxee + '"',
+			  function (error, stdout, stderr) {
+			    if (error !== null) {
+			      util.log('exec error: ' + error);
+			    }
+			});
 
+			server = null;
+			server = dgram.createSocket("udp4");
+			initialize(server);
+			console.log(util.inspect(server));
+			listen();
+
+		} else {
+			util.log("NOT a discover packet...");
+		}
+
+	});
+
+	server.on("listening", function () {
+	  var address = server.address();
+	  util.log("server listening " + address.address + ":" + address.port);
+	});	
+}
+
+initialize(server);
+console.log(util.inspect(server));
 listen();
