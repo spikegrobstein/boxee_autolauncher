@@ -26,34 +26,6 @@ function listen () {
 
 }
 
-// returns true if boxee is running
-// checks this by looking at child.pid and hitting it with kill -0
-function is_boxee_running (callback_on_true, callback_on_false) {
-	if (typeof callback_on_true !== 'function') {
-		util.log("callback_on_true not defined.");
-		callback_on_true = function() { return false; };
-	}
-	
-	if (typeof callback_on_false !== 'function') {
-		util.log("callback_on_false not defined.");
-		callback_on_false = function() { return false; };
-	}
-	
-	if (!child) {
-		util.log("no child process... must not be running.")
-		// if there's no child, yet, then it's not running
-		callback_on_false();
-		return;
-	}
-	
-	// send kill -0 to child.pid.
-	util.log("Running Kill command");
-	var kill_cmd = exec('kill -0 ' + child.pid,
-		function (error, stdout, stderr) {
-			(error !== null) ? callback_on_true() : callback_on_false();
-	});
-}
-
 server.on("message", function (msg, rinfo) {
   //util.log("server got: " + msg + " from " + rinfo.address + ":" + rinfo.port);
 
