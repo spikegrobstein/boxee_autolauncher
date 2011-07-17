@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 // configuration:
 
 var path_to_boxee = "/Applications/Boxee.app";
